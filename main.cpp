@@ -2,46 +2,46 @@
  * Hash Table - Basically student list but we use a hash table 
  * 2/6/2023
  */ 
+
 #include "HashTable.h"
-#include "Utils.h"
-#include <vector>
 
 using namespace std;
 
 // Prompt the user to add a student 
-void promptAddStudent(vector<Student*>* students) {
-  
-}
-
-// Print the list size and the list 
-void printList(vector<Student*>* students) {
-   
+bool promptAddStudent(HashTable& table) {
+  char in[100];
+  char in2[35];
+  int id;
+  float gpa;
+  cout << "Enter first name: ";
+  cin >> in;
+  cout << "Enter last name: ";
+  cin >> in2;
+  cout << "Enter student ID: ";
+  cin >> id;
+  cout << "Enter GPA: ";
+  cin >> gpa;
+  return table.insert(new Student(in, in2, id, gpa));
 }
 
 // Delete a student from the list
-void deleteStudent(vector<Student*>* students) {
-  
+bool promptDeleteStudent(HashTable& table) {
+  cout << "Enter the ID to delete: ";
+  int id;
+  cin >> id;
+  return table.erase(id);
 }
 
 int main() {
-  vector<Student*>* students = new vector<Student*>(); // Vector of student struct pointers 
   HashTable table;
   char in[35];
-  // Epic testing
-  char* yes = "pp";
-  int deez = 5;
-  for (int i = 0; i < 5000; i++) {
-    table.insert(new Student(yes, yes, deez++, 3.5f));
-  }
-  table.debugPrint();
-  return 0;
   while (true) {
     cout << "Enter command (ADD, PRINT, DELETE, or QUIT): ";
     cin >> in;
     try {
-      if (Utils::chkcmd(in, "add")) promptAddStudent(students);
-      else if (Utils::chkcmd(in, "print")) printList(students);
-      else if (Utils::chkcmd(in, "delete")) deleteStudent(students);
+      if (Utils::chkcmd(in, "add")) cout << (promptAddStudent(table) ? "Added!" : "Couldn't add, a student with the same ID already exists!") << endl;
+      else if (Utils::chkcmd(in, "print")) table.print();
+      else if (Utils::chkcmd(in, "delete")) cout << (promptDeleteStudent(table) ? "Deleted!" : "Couldn't delete, there was no student with that ID!") << endl;
       else if (Utils::chkcmd(in, "quit")) break;
       else cout << "That command isn't recognized!\n";
     }

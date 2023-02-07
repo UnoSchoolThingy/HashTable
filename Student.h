@@ -9,14 +9,18 @@ struct Student {
   unsigned int id;
   float gpa;
 
+  Student() {
+    memset(this, 0x0, sizeof(Student));
+  }
+
+  Student(Student* s) {
+    memcpy(this, s, sizeof(Student));
+  }
+
   Student(char* firstname, char* lastname, unsigned int id, float gpa) {
     strcpy(this->firstname, firstname);
     strcpy(this->lastname, lastname);
     this->id = id;
     this->gpa = gpa;
-  }
-
-  Student(Student* s) {
-    memcpy(this, s, sizeof(Student));
   }
 };
