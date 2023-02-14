@@ -4,6 +4,8 @@
  */ 
 
 #include "HashTable.h"
+#include <fstream>
+#include <set>
 
 using namespace std;
 
@@ -32,16 +34,40 @@ bool promptDeleteStudent(HashTable& table) {
   return table.erase(id);
 }
 
+void handleGenCommand(HashTable& table) {
+  int amount;
+  cout << "Enter number of students to insert: ";
+  cin >> amount;
+  // Load the names 
+  ifstream finF("firstnames.txt");
+  ifstream finL("lastnames.txt");
+  char firstnames[10][20];
+  char lastnames[10][20];
+  for (int i = 0; i < 10; i++) {
+    finF >> firstnames[i];
+    finL >> lastnames[i];
+  }
+  // Add to list 
+  for (int i = 0; i < amount; i++) {
+    if (!table.insert(new Student(firstnames[rand() % 10], lastnames[rand() % 10], 100000 + rand() % 900000, 3.f + ((float)(rand() % 171) / 100.f)))) i--;
+  }
+  finF.close();
+  finL.close();
+  cout << "Completed!\n";
+}
+
 int main() {
+  srand(time(NULL));
   HashTable table;
   char in[35];
   while (true) {
-    cout << "Enter command (ADD, PRINT, DELETE, or QUIT): ";
+    cout << "Enter command (ADD, PRINT, DELETE, GEN, or QUIT): ";
     cin >> in;
     try {
       if (Utils::chkcmd(in, "add")) cout << (promptAddStudent(table) ? "Added!" : "Couldn't add, a student with the same ID already exists!") << endl;
       else if (Utils::chkcmd(in, "print")) table.print();
       else if (Utils::chkcmd(in, "delete")) cout << (promptDeleteStudent(table) ? "Deleted!" : "Couldn't delete, there was no student with that ID!") << endl;
+      else if (Utils::chkcmd(in, "gen")) handleGenCommand(table); 
       else if (Utils::chkcmd(in, "quit")) break;
       else cout << "That command isn't recognized!\n";
     }
