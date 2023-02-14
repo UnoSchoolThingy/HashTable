@@ -4,7 +4,7 @@
 #include <cstring>
 #include <math.h>
 
-// Various utilities 
+// Various utilities, except there's just one here 
 struct Utils {
   // Check if a string is equal to a certain command 
   static bool chkcmd(const char* a, const char* b) {
@@ -17,6 +17,4 @@ struct Utils {
     delete[] l;
     return res;
   }
-
-  
 };
