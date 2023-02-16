@@ -125,6 +125,7 @@ struct HashTable {
           delete e;
         }
       }
+      delete[] entries;
       // All of our students are now in the list, we can rehash and reinsert as needed
       size *= 2;
       this->entries = reinterpret_cast<Entry**>(new unsigned long long[size]);
